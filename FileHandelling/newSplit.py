@@ -3,7 +3,9 @@ __author__ = 'Ronak Kogta<rixor786@gmail.com>'
 __description__ = \
 ''' Splits the file into smaller files '''
 
-import argparse;  
+import argparse;
+import sys;
+import os;  
 
 if __name__ == '__main__':
 
@@ -14,34 +16,34 @@ if __name__ == '__main__':
 	args = parser.parse_args();
 
 	with open(args.input,'r') as f:
-		chunkSize = int(args.nlines);
-		counter = 0;
-		checkFlag = 0;
-		partition_count = 1; 
+		CHUNK_SIZE = int(args.nlines);
+		INPUT_FILE = args.input; 
+		EXIT_FLAG = 0;
+		PARTITION_COUNT = 1;
+		 
 		while (True):
-			counter = 0;
-			splitFile =  ('%s-%s%d%s' % (str(args.input.split('.')[0]), args.suffix, partition_count,\
-			str("."+args.input.split('.')[1])));
+			chunk_index = 0;
+			NEW_SPLIT_FILE = "{}-{}{}{}".format(str(INPUT_FILE.split('.')[0]),\
+			args.suffix, PARTITION_COUNT, str("."+args.input.split('.')[1]));
 			
-			print ("Writing %s" % splitFile);
-
-			with open(splitFile,'w') as fw:
-				while (counter != chunkSize):
-					EOFflag = 0;  
+			with open(NEW_SPLIT_FILE,'w') as fw:
+				while (chunk_index != CHUNK_SIZE):
+					fileContextFlag = 1;  
 					for line in f:						# making file as an iterable object
 						fw.write(line);
-						print ("writing %s at %d" %(line,counter));
-						EOFflag = 1;
+						fileContextFlag = 0;
 						break;
-					counter += 1;
-					if (EOFflag == 0):
-						checkFlag = 1;
-						break; 
+					if (fileContextFlag):
+						EXIT_FLAG = 1;
+						break;
+					chunk_index += 1;	 
 			
-			if (checkFlag == 1): 				# Last part of file 
+			if (EXIT_FLAG and chunk_index == 0):		# Last part of file, and if empty 
+				os.remove(NEW_SPLIT_FILE);
 				break;
 
-			partition_count += 1;	 	  	
+			print ("Writing %s" % NEW_SPLIT_FILE);	
+			PARTITION_COUNT += 1;	 	  	
 			
 
 
