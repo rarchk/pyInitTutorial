@@ -1,5 +1,11 @@
-Generators in python 
+Generators/Iterators in python 
 === 
+Lists, Tupples, Dicts, String and an object is iterable because each implements either one or both of(Duck Programming) 
+
+-  __getitem__()
+-  __iter__()
+
+
 Everything that for loop does is iterate over an iterable object. 
 Now an iterable object can be a list dictionary tuple or set, or it can be a generator function 
 
