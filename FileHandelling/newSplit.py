@@ -20,22 +20,20 @@ if __name__ == '__main__':
 		INPUT_FILE = args.input; 
 		EXIT_FLAG = 0;
 		PARTITION_COUNT = 1;
-		 
+		iterFile = iter(f);
+		
 		while (True):
 			chunk_index = 0;
 			NEW_SPLIT_FILE = "{}-{}{}{}".format(str(INPUT_FILE.split('.')[0]),\
 			args.suffix, PARTITION_COUNT, str("."+args.input.split('.')[1]));
-			
+			 
 			with open(NEW_SPLIT_FILE,'w') as fw:
 				while (chunk_index != CHUNK_SIZE):
-					fileContextFlag = 1;  
-					for line in f:						# making file as an iterable object
-						fw.write(line);
-						fileContextFlag = 0;
-						break;
-					if (fileContextFlag):
-						EXIT_FLAG = 1;
-						break;
+					try:
+						fw.write(next(iterFile));
+					except: 
+						EXIT_FLAG = 1;					# End of file  
+						break;	
 					chunk_index += 1;	 
 			
 			if (EXIT_FLAG and chunk_index == 0):		# Last part of file, and if empty 
