@@ -1,10 +1,41 @@
 Generators/Iterators in python 
 === 
-Lists, Tupples, Dicts, String and an object is iterable because each implements either one or both of(Duck Programming) 
 
--  __getitem__()
+## Iterators and Iterables 
+Lists, tuples and dictionary, sets are said to be iterable in python, so you can for loop them. 
+
+Collections*(lists,tuples..)* apart, any class can be made iterable, if it has two functions implemented. 
+
+-  __getitem__() # for  backward compatability. 
 -  __iter__()
 
+So, a basic test for any object to be iterable is to 
+
+```python 
+>>> iter(object)
+```
+It returns an iterator object, if it is iterable otherwise it raises a TypeError. An iterator is something that iterates over an iterable object with the help of 
+
+```python
+>>> next(iterObject);
+>>> __iter__(iterObject); # Returns itself
+``` 
+If all elements of an iterable objects are exhausted by next of iterator, then it raises an StopIteration error. Furthermore, it is not possible to reset an iterator, even if you call iter over iterator object, as __iter__ of an iterator object returns itself. 
+
+```python
+# simple for loop 
+for i in [1,2,3]:
+	print (i);
+
+# same loop broken down 
+i = iter([1,2,3]);
+while True:
+	try:
+		print (next(i));
+	except StopIteration:
+		del i; 
+		break; 	 	 
+``` 
 
 Everything that for loop does is iterate over an iterable object. 
 Now an iterable object can be a list dictionary tuple or set, or it can be a generator function 
